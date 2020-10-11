@@ -4,6 +4,6 @@ go 1.14
 
 require (
 	github.com/aws/aws-sdk-go v1.34.23
-	go.opentelemetry.io/otel v0.11.0
+	go.opentelemetry.io/otel v0.13.0
 	go.opentelemetry.io/otel/sdk v0.11.0
 )
