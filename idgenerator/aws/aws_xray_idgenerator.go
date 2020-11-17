@@ -76,7 +76,3 @@ func getCurrentTimeHex() []uint8 {
 	}
 	return currentTimeHex
 }
-
-func intToHex(n int64) []byte {
-	return []byte(strconv.FormatInt(n, 16))
-}
