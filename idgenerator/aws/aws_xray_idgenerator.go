@@ -70,9 +70,6 @@ func (gen *xRayIDGenerator) NewTraceID() traceID {
 
 func getCurrentTimeHex() []uint8 {
 	currentTime := time.Now().Unix()
-	currentTimeHex, err := hex.DecodeString(strconv.FormatInt(currentTime, 16))
-	if err != nil {
-		panic(err)
-	}
+	currentTimeHex, _ := hex.DecodeString(strconv.FormatInt(currentTime, 16))
 	return currentTimeHex
 }
