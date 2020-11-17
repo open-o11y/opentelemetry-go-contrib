@@ -20,6 +20,8 @@ import (
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func (t traceID) convertTraceIDToHexString() string {
@@ -34,10 +36,9 @@ func TestAwsXRayTraceIdIsValidLength(t *testing.T) {
 	idg := awsXRayIDGenerator()
 	traceIDHex := idg.NewTraceID().convertTraceIDToHexString()
 	traceIDLength := len(traceIDHex)
+	expectedTraceIDLength := 32
 
-	if traceIDLength != 32 {
-		t.Errorf("TraceID has incorrect length. Got length of %d, expected 32", traceIDLength)
-	}
+	assert.Equal(t, traceIDLength, expectedTraceIDLength, "TraceID has incorrect length.")
 }
 
 func TestAwsXRayTraceIdIsUnique(t *testing.T) {
@@ -45,9 +46,7 @@ func TestAwsXRayTraceIdIsUnique(t *testing.T) {
 	traceID1 := idg.NewTraceID().convertTraceIDToHexString()
 	traceID2 := idg.NewTraceID().convertTraceIDToHexString()
 
-	if traceID1 == traceID2 {
-		t.Errorf("TraceID should be unique. Got TraceID1 = %s and TraceID2 = %s", traceID1, traceID2)
-	}
+	assert.NotEqual(t, traceID1, traceID2, "TraceID should be unique")
 }
 
 func TestAwsXRayTraceIdTimeStampInBounds(t *testing.T) {
@@ -65,33 +64,29 @@ func TestAwsXRayTraceIdTimeStampInBounds(t *testing.T) {
 		t.Error(err)
 	}
 
-	inLowerBound := previousTime <= currentTime
-	inUpperBound := currentTime <= nextTime
-
-	if !inLowerBound || !inUpperBound {
-		t.Errorf("TraceID is generated incorrectly with the wrong timestamp. Got epoch time %d, expected epoch time should be between %d and %d", currentTime, previousTime, currentTime)
-	}
+	assert.LessOrEqual(t, previousTime, currentTime, "TraceID is generated incorrectly with the wrong timestamp.")
+	assert.LessOrEqual(t, currentTime, nextTime, "TraceID is generated incorrectly with the wrong timestamp.")
 }
 
 func TestAwsXRayTraceIdIsNotNil(t *testing.T) {
 	var nilTraceID traceID
 	idg := awsXRayIDGenerator()
 	traceID := idg.NewTraceID()
-	isNil := bytes.Equal(traceID[:], nilTraceID[:])
 
-	if isNil == true {
-		t.Error("TraceID cannot be Nil.")
-	}
+	assert.False(t, bytes.Equal(traceID[:], nilTraceID[:]), "TraceID cannot be Nil.")
 }
 
 func TestAwsXRaySpanIdIsValidLength(t *testing.T) {
 	idg := awsXRayIDGenerator()
 	spanIDHex := idg.NewSpanID().cconvertSpanIDToHexString()
 	spanIDLength := len(spanIDHex)
+	expectedSpanIDLength := 16
 
 	if spanIDLength != 16 {
 		t.Errorf("SpanID has incorrect length. Got length of %d, expected 16", spanIDLength)
 	}
+
+	assert.Equal(t, spanIDLength, expectedSpanIDLength, "SpanID has incorrect length")
 }
 
 func TestAwsXRaySpanIdIsUnique(t *testing.T) {
@@ -99,18 +94,13 @@ func TestAwsXRaySpanIdIsUnique(t *testing.T) {
 	spanID1 := idg.NewSpanID().cconvertSpanIDToHexString()
 	spanID2 := idg.NewSpanID().cconvertSpanIDToHexString()
 
-	if spanID1 == spanID2 {
-		t.Errorf("SpanID should be unique. Got spanID1 = %s and spanID2 = %s", spanID1, spanID2)
-	}
+	assert.NotEqual(t, spanID1, spanID2, "SpanID should be unique")
 }
 
 func TestAwsXRaySpanIdIsNotNil(t *testing.T) {
 	var nilSpanID spanID
 	idg := awsXRayIDGenerator()
 	spanID := idg.NewSpanID()
-	isNil := bytes.Equal(spanID[:], nilSpanID[:])
 
-	if isNil == true {
-		t.Error("SpanID cannot be Nil.")
-	}
+	assert.False(t, bytes.Equal(spanID[:], nilSpanID[:]), "SpanID cannot be Nil.")
 }
