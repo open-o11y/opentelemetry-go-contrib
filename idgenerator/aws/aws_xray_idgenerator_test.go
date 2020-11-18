@@ -28,7 +28,7 @@ func (t traceID) convertTraceIDToHexString() string {
 	return hex.EncodeToString(t[:])
 }
 
-func (s spanID) cconvertSpanIDToHexString() string {
+func (s spanID) convertSpanIDToHexString() string {
 	return hex.EncodeToString(s[:])
 }
 
@@ -78,7 +78,7 @@ func TestAwsXRayTraceIdIsNotNil(t *testing.T) {
 
 func TestAwsXRaySpanIdIsValidLength(t *testing.T) {
 	idg := awsXRayIDGenerator()
-	spanIDHex := idg.NewSpanID().cconvertSpanIDToHexString()
+	spanIDHex := idg.NewSpanID().convertSpanIDToHexString()
 	spanIDLength := len(spanIDHex)
 	expectedSpanIDLength := 16
 
@@ -87,8 +87,8 @@ func TestAwsXRaySpanIdIsValidLength(t *testing.T) {
 
 func TestAwsXRaySpanIdIsUnique(t *testing.T) {
 	idg := awsXRayIDGenerator()
-	spanID1 := idg.NewSpanID().cconvertSpanIDToHexString()
-	spanID2 := idg.NewSpanID().cconvertSpanIDToHexString()
+	spanID1 := idg.NewSpanID().convertSpanIDToHexString()
+	spanID2 := idg.NewSpanID().convertSpanIDToHexString()
 
 	assert.NotEqual(t, spanID1, spanID2, "SpanID should be unique")
 }
