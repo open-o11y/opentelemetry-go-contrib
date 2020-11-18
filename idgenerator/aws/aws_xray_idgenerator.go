@@ -40,7 +40,10 @@ type xRayIDGenerator struct {
 func awsXRayIDGenerator() idGenerator {
 	gen := &xRayIDGenerator{}
 	var rngSeed int64
-	_ = binary.Read(crand.Reader, binary.LittleEndian, &rngSeed)
+	err := binary.Read(crand.Reader, binary.LittleEndian, &rngSeed)
+	if err != nil {
+		panic(err)
+	}
 	gen.randSource = rand.New(rand.NewSource(rngSeed))
 	return gen
 }
@@ -70,6 +73,9 @@ func (gen *xRayIDGenerator) NewTraceID() traceID {
 
 func getCurrentTimeHex() []uint8 {
 	currentTime := time.Now().Unix()
-	currentTimeHex, _ := hex.DecodeString(strconv.FormatInt(currentTime, 16))
+	currentTimeHex, err := hex.DecodeString(strconv.FormatInt(currentTime, 16))
+	if err != nil {
+		panic(err)
+	}
 	return currentTimeHex
 }
