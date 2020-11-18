@@ -82,10 +82,6 @@ func TestAwsXRaySpanIdIsValidLength(t *testing.T) {
 	spanIDLength := len(spanIDHex)
 	expectedSpanIDLength := 16
 
-	if spanIDLength != 16 {
-		t.Errorf("SpanID has incorrect length. Got length of %d, expected 16", spanIDLength)
-	}
-
 	assert.Equal(t, spanIDLength, expectedSpanIDLength, "SpanID has incorrect length")
 }
 
