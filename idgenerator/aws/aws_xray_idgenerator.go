@@ -27,7 +27,8 @@ import (
 type spanID [8]byte
 type traceID [16]byte
 
-type idGenerator interface {
+// IDGenerator is an interface for generating new TraceIDs and SpanIDs
+type IDGenerator interface {
 	NewTraceID() traceID
 	NewSpanID() spanID
 }
@@ -37,7 +38,8 @@ type xRayIDGenerator struct {
 	randSource *rand.Rand
 }
 
-func awsXRayIDGenerator() idGenerator {
+// XRayIDGenerator returns an idGenerator used for sending traces to AWS X-Ray
+func XRayIDGenerator() IDGenerator {
 	gen := &xRayIDGenerator{}
 	var rngSeed int64
 	err := binary.Read(crand.Reader, binary.LittleEndian, &rngSeed)

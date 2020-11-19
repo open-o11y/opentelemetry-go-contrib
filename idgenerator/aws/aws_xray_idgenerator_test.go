@@ -33,7 +33,7 @@ func (s spanID) convertSpanIDToHexString() string {
 }
 
 func TestAwsXRayTraceIdIsValidLength(t *testing.T) {
-	idg := awsXRayIDGenerator()
+	idg := XRayIDGenerator()
 	traceIDHex := idg.NewTraceID().convertTraceIDToHexString()
 	traceIDLength := len(traceIDHex)
 	expectedTraceIDLength := 32
@@ -42,7 +42,7 @@ func TestAwsXRayTraceIdIsValidLength(t *testing.T) {
 }
 
 func TestAwsXRayTraceIdIsUnique(t *testing.T) {
-	idg := awsXRayIDGenerator()
+	idg := XRayIDGenerator()
 	traceID1 := idg.NewTraceID().convertTraceIDToHexString()
 	traceID2 := idg.NewTraceID().convertTraceIDToHexString()
 
@@ -51,7 +51,7 @@ func TestAwsXRayTraceIdIsUnique(t *testing.T) {
 
 func TestAwsXRayTraceIdTimeStampInBounds(t *testing.T) {
 
-	idg := awsXRayIDGenerator()
+	idg := XRayIDGenerator()
 
 	previousTime := time.Now().Unix()
 
@@ -70,14 +70,14 @@ func TestAwsXRayTraceIdTimeStampInBounds(t *testing.T) {
 
 func TestAwsXRayTraceIdIsNotNil(t *testing.T) {
 	var nilTraceID traceID
-	idg := awsXRayIDGenerator()
+	idg := XRayIDGenerator()
 	traceID := idg.NewTraceID()
 
 	assert.False(t, bytes.Equal(traceID[:], nilTraceID[:]), "TraceID cannot be Nil.")
 }
 
 func TestAwsXRaySpanIdIsValidLength(t *testing.T) {
-	idg := awsXRayIDGenerator()
+	idg := XRayIDGenerator()
 	spanIDHex := idg.NewSpanID().convertSpanIDToHexString()
 	spanIDLength := len(spanIDHex)
 	expectedSpanIDLength := 16
@@ -86,7 +86,7 @@ func TestAwsXRaySpanIdIsValidLength(t *testing.T) {
 }
 
 func TestAwsXRaySpanIdIsUnique(t *testing.T) {
-	idg := awsXRayIDGenerator()
+	idg := XRayIDGenerator()
 	spanID1 := idg.NewSpanID().convertSpanIDToHexString()
 	spanID2 := idg.NewSpanID().convertSpanIDToHexString()
 
@@ -95,7 +95,7 @@ func TestAwsXRaySpanIdIsUnique(t *testing.T) {
 
 func TestAwsXRaySpanIdIsNotNil(t *testing.T) {
 	var nilSpanID spanID
-	idg := awsXRayIDGenerator()
+	idg := XRayIDGenerator()
 	spanID := idg.NewSpanID()
 
 	assert.False(t, bytes.Equal(spanID[:], nilSpanID[:]), "SpanID cannot be Nil.")
