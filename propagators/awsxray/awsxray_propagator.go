@@ -95,7 +95,7 @@ func (awsxray Xray) Extract(ctx context.Context, carrier otel.TextMapCarrier) co
 	return ctx
 }
 
-//extracts Span Context from context
+// extracts Span Context from context
 func extract(headerVal string) (trace.SpanContext, error) {
 	var (
 		sc             = trace.SpanContext{}
@@ -138,7 +138,7 @@ func extract(headerVal string) (trace.SpanContext, error) {
 	return sc, nil
 }
 
-//returns position of the first occurrence of a substring starting at pos index
+// returns position of the first occurrence of a substring starting at pos index
 func indexOf(str string, substr string, pos int) int {
 	index := strings.Index(str[pos:], substr)
 	if index > -1 {
@@ -147,7 +147,7 @@ func indexOf(str string, substr string, pos int) int {
 	return index
 }
 
-//returns trace Id if  valid else return invalid trace Id
+// returns trace Id if  valid else return invalid trace Id
 func parseTraceID(xrayTraceID string) (trace.ID, error) {
 	if len(xrayTraceID) != traceIDLength {
 		return empty.TraceID, errMalformedTraceID
@@ -168,7 +168,7 @@ func parseTraceID(xrayTraceID string) (trace.ID, error) {
 	return trace.IDFromHex(result)
 }
 
-//returns traceFlag
+// returns traceFlag
 func parseTraceFlag(xraySampledFlag string) byte {
 	if len(xraySampledFlag) == sampledFlagLength && xraySampledFlag != isSampled {
 		return traceFlagNone
