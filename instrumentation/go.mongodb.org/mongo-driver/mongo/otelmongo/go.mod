@@ -9,7 +9,7 @@ require (
 	github.com/xdg/stringprep v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.5.0
 	go.opentelemetry.io/contrib v0.19.0
-	go.opentelemetry.io/otel v0.19.0
-	go.opentelemetry.io/otel/oteltest v0.19.0
-	go.opentelemetry.io/otel/trace v0.19.0
+	go.opentelemetry.io/otel v0.20.0
+	go.opentelemetry.io/otel/oteltest v0.20.0
+	go.opentelemetry.io/otel/trace v0.20.0
 )
